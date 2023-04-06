@@ -11,7 +11,23 @@ RSpec.describe Ship do
       cruiser = Ship.new("Cruiser", 3)
       expect(cruiser.name).to eq("Cruiser")
       expect(cruiser.length).to eq(3)
-      expect(cruiser.health).to eq(cruiser.length)  
+      expect(cruiser.health).to eq(3)  
     end
-  
+    
+  describe "#sunk?" do
+    it "starts as not sunk" do
+      cruiser = Ship.new("Cruiser", 3)
+
+      expect(cruiser.sunk?).to eq(false)
+    end
+  end
+
+  describe "#hit?" do
+    it "it deducts the health by one" do
+      cruiser = Ship.new("Cruiser", 3)
+      expect(cruiser.health).to eq(3)
+      cruiser.hit
+      expect(cruiser.health).to eq(2)
+    end
+  end
 end
