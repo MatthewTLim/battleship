@@ -29,5 +29,4 @@ RSpec.describe Ship do
       cruiser.hit
       expect(cruiser.health).to eq(2)
     end
-  end
 end
