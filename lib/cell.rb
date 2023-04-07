@@ -33,4 +33,11 @@ class Cell
     end
   end
 
+  def render
+   if @is_fired_upon == true && @ship == nil
+      "M"
+    else
+      "."
+    end
+  end
 end

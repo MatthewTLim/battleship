@@ -61,4 +61,18 @@ RSpec.describe Cell do
     end
   end
 
+  describe "#render" do
+    it "renders . when not fired upon" do
+      cell_1 = Cell.new("B4")
+      
+      expect(cell_1.render).to eq(".")
+    end
+
+    it "renders M when fired upon" do
+      cell_1 = Cell.new("B4")
+      
+      cell_1.fire_upon
+      expect(cell_1.render).to eq("M")
+    end
+  end
 end
