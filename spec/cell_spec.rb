@@ -36,4 +36,29 @@ RSpec.describe Cell do
     end
   end
 
+  describe "#fired_upon?" do 
+    it "checks if cell has been fired upon" do 
+      cell = Cell.new("B4")
+      cruiser = Ship.new("Cruiser", 3)
+
+      cell.place_ship(cruiser)
+      expect(cell.fired_upon?).to be(false)
+    end
+  end
+
+  describe "#fire_upon" do 
+    it "fires upon a cell" do
+      cell = Cell.new("B4")
+      cruiser = Ship.new("Cruiser", 3)
+
+      cell.place_ship(cruiser)
+      expect(cell.fired_upon?).to be(false)
+
+      cell.fire_upon
+      
+      expect(cell.ship.health).to eq(2)
+      expect(cell.fired_upon?).to be(true)
+    end
+  end
+
 end
