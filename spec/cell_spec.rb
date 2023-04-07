@@ -10,7 +10,9 @@ RSpec.describe Cell do
     end
 
     it 'has readable attributes' do 
+      cell = Cell.new("B4")
 
+      expect(cell.coordinate).to eq("B4")
     end
   end
 end
