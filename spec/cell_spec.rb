@@ -61,4 +61,44 @@ RSpec.describe Cell do
     end
   end
 
+  describe "#render" do
+    it "renders . when not fired upon" do
+      cell_1 = Cell.new("B4")
+      
+      expect(cell_1.render).to eq(".")
+    end
+
+    it "renders M when fired upon" do
+      cell_1 = Cell.new("B4")
+      
+      cell_1.fire_upon
+      expect(cell_1.render).to eq("M")
+    end
+    
+    it "renders . when ship is placed" do
+      cell_2 = Cell.new("C3")
+      cruiser = Ship.new("Cruiser", 3)
+      
+      cell_2.place_ship(cruiser)
+      expect(cell_2.render).to eq(".")
+    end
+
+    it "renders S to reveals a ships location" do
+      cell_2 = Cell.new("C3")
+      cruiser = Ship.new("Cruiser", 3)
+      
+      cell_2.place_ship(cruiser)
+      expect(cell_2.render(true)).to eq("S")
+    end
+
+    it "renders H when a ship is hit" do
+      cell_2 = Cell.new("C3")
+      cruiser = Ship.new("Cruiser", 3)
+      
+      cell_2.place_ship(cruiser)
+      expect(cell_2.render(true)).to eq("S")
+      cell_2.fire_upon
+      expect(cell_2.render).to eq("H")
+    end
+  end
 end
