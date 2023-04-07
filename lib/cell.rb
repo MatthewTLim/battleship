@@ -5,12 +5,12 @@ class Cell
   def initialize(coordinate)
     @coordinate = coordinate
     @ship = nil
-    @is_empty = true
+    @is_fired_upon = false
   end
 
   def empty?
     if @ship.nil?
-      @is_empty
+      true
     else
       false
     end
@@ -18,6 +18,10 @@ class Cell
 
   def place_ship(ship) 
     @ship = ship
+  end
+
+  def fired_upon?
+    @is_fired_upon
   end
 
 
