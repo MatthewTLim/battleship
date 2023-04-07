@@ -33,11 +33,20 @@ class Cell
     end
   end
 
-  def render
+  def render(value=false)
    if @is_fired_upon == true && @ship == nil
       "M"
-    else
+   elsif @is_fired_upon == false && @ship == ship && value == true
+      "S"
+   else
       "."
     end
   end
+
+  # not been fired upon and contains a ship
+  # if the cell has been fired upon and it contains a ship (the shot was a hit).
+
+  # def render(true)
+
+  # end
 end
