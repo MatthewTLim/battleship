@@ -91,14 +91,14 @@ RSpec.describe Cell do
       expect(cell_2.render(true)).to eq("S")
     end
 
-    # it "renders H when a ship is hit" do
-    #   cell_2 = Cell.new("C3")
-    #   cruiser = Ship.new("Cruiser", 3)
+    it "renders H when a ship is hit" do
+      cell_2 = Cell.new("C3")
+      cruiser = Ship.new("Cruiser", 3)
       
-    #   cell_2.place_ship(cruiser)
-    #   expect(cell_2.render(true)).to eq("S")
-    #   cell_2.fire_upon
-    #   expect(cell_2.render).to eq("H")
-    # end
+      cell_2.place_ship(cruiser)
+      expect(cell_2.render(true)).to eq("S")
+      cell_2.fire_upon
+      expect(cell_2.render).to eq("H")
+    end
   end
 end

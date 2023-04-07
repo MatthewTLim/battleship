@@ -38,6 +38,8 @@ class Cell
       "M"
    elsif @is_fired_upon == false && @ship == ship && value == true
       "S"
+   elsif @is_fired_upon == true && @ship == ship
+      "H"
    else
       "."
     end
