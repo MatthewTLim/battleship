@@ -24,7 +24,13 @@ class Cell
     @is_fired_upon
   end
 
-
-
+  def fire_upon
+    if @ship = ship
+      @is_fired_upon = true
+      @ship.hit
+    else
+      @is_fired_upon = true
+    end
+  end
 
 end
