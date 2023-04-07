@@ -32,9 +32,8 @@ RSpec.describe Cell do
 
       cell.place_ship(cruiser)
       expect(cell.ship).to eq(cruiser)
-
+      expect(cell.empty?).to be(false)
     end
-
   end
 
 end
