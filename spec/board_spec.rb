@@ -74,7 +74,28 @@ RSpec.describe Board do
       expect(@board.valid_placement?(@submarine, ["E1", "E2"])).to be(false)
       expect(@board.valid_placement?(@cruiser, ["C1", "D1", "E1"])).to be(false)
     end
-
-
   end
+
+  describe "#place(ship)" do
+    it "places a ship opn the board" do
+      @board = Board.new
+      @cruiser = Ship.new("Cruiser", 3)
+
+      # expect(@board).to be_a(Board)
+
+      board.place(cruiser, ["A1", "A2", "A3"])
+
+      cell_1 = board.cells["A1"]    
+      cell_2 = board.cells["A2"]
+      cell_3 = board.cells["A3"]    
+
+      expect(cell_1.ship).to eq(cruiser)
+      expect(cell_2.ship).to eq(cruiser)
+      expect(cell_3.ship).to eq(cruiser)
+
+      expect(cell_3.ship == cell_2.ship).to be(true)
+    end
+  end
+
+
 end
