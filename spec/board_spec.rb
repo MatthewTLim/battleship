@@ -19,7 +19,7 @@ RSpec.describe Board do
     end
   end
 
-  describe "#valid_placement?(ship, coordinates)" do
+  describe "#valid_coordinate?(coordinate)" do
     it "can validate coordinate" do
       board = Board.new
 
@@ -28,6 +28,15 @@ RSpec.describe Board do
       expect(board.valid_coordinate?("A5")).to be(false)
       expect(board.valid_coordinate?("E1")).to be(false)
       expect(board.valid_coordinate?("A22")).to be(false)
+    end
+  end
+
+  describe "#valid_coordinates?(coordinates)" do
+    it "can validate coordinates" do
+      board = Board.new
+
+      expect(board.valid_coordinates?(["A1", "B2", "C4"])).to be(true)
+      expect(board.valid_coordinates?(["A3", "A5", "A1"])).to be(false)
     end
   end
 
@@ -57,7 +66,15 @@ RSpec.describe Board do
 
     it "returns true if placement is valid" do
       expect(@board.valid_placement?(@submarine, ["A1", "A2"])).to be(true)
+      expect(@board.valid_placement?(@submarine, ["E1", "E2"])).to be(false)
       expect(@board.valid_placement?(@cruiser, ["B1", "C1", "D1"])).to be(true)
     end
+
+    it "returns false if placement coordinates are invalid" do
+      expect(@board.valid_placement?(@submarine, ["E1", "E2"])).to be(false)
+      expect(@board.valid_placement?(@cruiser, ["C1", "D1", "E1"])).to be(false)
+    end
+
+
   end
 end
