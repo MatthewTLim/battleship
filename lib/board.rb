@@ -8,14 +8,16 @@ class Board
     @cells = {}
     ("A".."D").each do |letter|
       (1..4).each do |number|
-       cell_key = "#{letter}#{number}"
-       @cells[cell_key] = Cell.new(cell_key)
+        cell_key = "#{letter}#{number}"
+        @cells[cell_key] = Cell.new(cell_key)
       end
     end
   end
 
-  def valid_coordinate?(coordinates)
-    @cells.key?(coordinates)
+
+
+  def valid_coordinate?(coordinate)
+    @cells.key?(coordinate)
   end
 
   def ascending?(data)
@@ -25,6 +27,13 @@ class Board
   def valid_placement?(ship, coordinates)
     return false unless coordinates.length == ship.length
     
+    new_coordinates = coordinates.map do |coordinate|
+    valid_coordinate?(coordinate)
+    end
+
+    return false if !new_coordinates.all?
+
+
     letters = coordinates.map { |coord| coord[0]}
     numbers = coordinates.map { |coord| coord[1..-1].to_i}
     
