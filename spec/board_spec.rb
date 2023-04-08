@@ -36,7 +36,6 @@ RSpec.describe Board do
       board = Board.new
 
       expect(board.valid_coordinates?(["A1", "B2", "C4"])).to be(true)
-      
       expect(board.valid_coordinates?(["A3", "A5", "A1"])).to be(false)
     end
   end
