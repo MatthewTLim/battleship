@@ -37,6 +37,9 @@ RSpec.describe Board do
 
       expect(board.valid_coordinates?(["A1", "B2", "C4"])).to be(true)
       expect(board.valid_coordinates?(["A3", "A5", "A1"])).to be(false)
+    
+        #!!!!! CHECK TO SEE IF WE NEED TO ADD ADDITTIONAL TESTING HERE????
+    
     end
   end
 
@@ -93,7 +96,17 @@ RSpec.describe Board do
 
       expect(cell_3.ship == cell_2.ship).to be(true)
     end
-  end
 
+    it 'does not overlap ships when placing' do
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)
+
+      board.place(cruiser, ["A1", "A2", "A3"])
+
+      submarine = Ship.new("Submarine", 2)    
+      
+      expect(board.valid_placement?(submarine, ["A1", "B1"])).to be (false)
+    end
+  end
 
 end
