@@ -20,10 +20,17 @@ class Board
 
   def valid_coordinates?(coordinates)
       new_coordinates = coordinates.map do |coordinate|
-      valid_coordinate?(coordinate)
+      valid_coordinate?(coordinate) && @cells[coordinate].ship.nil?
       end
       new_coordinates.all?
   end
+
+  # def valid_ship?(coordinates)
+  #     new_coordinates = coordinates.map do |coordinate|
+  #     @cells[coordinate].ship == nil
+  #     end
+  #     new_coordinates.all?
+  # end
 
   def ascending?(data)
     data.each_cons(2).all?{|left, right| left <= right}
@@ -31,7 +38,8 @@ class Board
 
   def valid_placement?(ship, coordinates)
     return false unless coordinates.length == ship.length
-    return false unless valid_coordinates?(coordinates) == true
+    return false unless valid_coordinates?(coordinates)
+    # return false unless valid_ship?(coordinates)
 
     letters = coordinates.map { |coord| coord[0]}
     numbers = coordinates.map { |coord| coord[1..-1].to_i}
@@ -44,4 +52,15 @@ class Board
       false
     end
   end
+
+  def place(ship, coordinates)
+    if valid_placement?(ship, coordinates)
+      coordinates.each do |coordinate|
+        @cells[coordinate].place_ship(ship)
+      end
+    else
+      false
+    end
+  end
+
 end
