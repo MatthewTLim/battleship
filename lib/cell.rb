@@ -42,12 +42,22 @@ class Cell
         @display = "X"
       elsif @display == "S"
         @display = "."
-      else
-        @display
+      else 
+      @display
       end
     end
-
   end
 end
+      # if fired_upon? == true
+      #   @display
+      # elsif @display == "S"
+      #   @display = "."
+      # else
+      #   @display
+      # end
+
+
+#   end
+# end
 
 

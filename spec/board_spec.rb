@@ -136,4 +136,50 @@ RSpec.describe Board do
       expect(board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . . \nC . . . . \nD . . . . \n")
     end
 
+    it "renders M when a placed ship is missed" do
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2) 
+
+      board.place(cruiser, ["A1", "A2", "A3"])
+      board.place(submarine, ["C1", "D1"])
+
+      expect(board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
+      expect(board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC S . . . \nD S . . . \n")
+
+      board.fire_upon("B4")
+      expect(board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . M \nC . . . . \nD . . . . \n")
+    end
+
+    it "renders X when a placed ship is sunk" do
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2) 
+
+      board.place(cruiser, ["A1", "A2", "A3"])
+      board.place(submarine, ["C1", "D1"])
+
+      expect(board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
+
+      expect(board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC S . . . \nD S . . . \n")
+
+      board.fire_upon("A1")
+      expect(board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . . \nC . . . . \nD . . . . \n")
+
+
+      board.fire_upon("B4")
+      expect(board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . M \nC . . . . \nD . . . . \n")
+
+
+      board.fire_upon("C1")
+      expect(board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . M \nC H . . . \nD . . . . \n")
+      
+      board.fire_upon("D1")
+      # expect(board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . M \nC X . . . \nD X . . . \n")
+
+      expect(board.render(true)).to eq("  1 2 3 4 \nA H S S . \nB . . . M \nC X . . . \nD X . . . \n")
+
+      
+    end
+
 end

@@ -88,4 +88,6 @@ class Board
     @cells[coordinate].fire_upon
   end
 
+  
+
 end
