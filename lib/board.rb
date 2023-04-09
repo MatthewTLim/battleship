@@ -42,6 +42,7 @@ class Board
     # return false unless valid_ship?(coordinates)
 
     letters = coordinates.map { |coord| coord[0]}
+  
     numbers = coordinates.map { |coord| coord[1..-1].to_i}
     
     if letters.uniq.length == 1
@@ -61,6 +62,25 @@ class Board
     else
       false
     end
+  end
+
+  def render(value=false)
+    letter = " "
+    new_display = "  1 2 3 4 "
+    counter = 0
+    @cells.each do |coordinate, cell|
+      letters = coordinate.split
+      letter_find = letters.map { |coord| coord[0]}
+      letter = letter_find[0]
+      if counter == 0
+        new_display << "\n#{letter}"
+      elsif counter % 4 == 0
+        new_display << " \n#{letter}"
+      end
+      counter += 1
+      new_display << " #{cell.render(value)}"
+    end
+    new_display << " \n"
   end
 
 end
