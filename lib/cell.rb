@@ -40,8 +40,11 @@ class Cell
     else
       if @display == "H" && @ship.sunk?
         @display = "X"
+      elsif @display == "S"
+        @display = "."
+      else
+        @display
       end
-      @display
     end
 
   end

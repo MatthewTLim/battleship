@@ -83,4 +83,9 @@ class Board
     new_display << " \n"
   end
 
+  def fire_upon(coordinate)
+    return false unless valid_coordinate?(coordinate)
+    @cells[coordinate].fire_upon
+  end
+
 end
