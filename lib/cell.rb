@@ -34,16 +34,25 @@ class Cell
     if value == true
       if @ship != nil && fired_upon? == false
         @display = "S"
-      else 
+      elsif @ship == nil && fired_upon? == false
         @display = "."
+      elsif @display == "H" && @ship.sunk?
+        @display = "X"
+      elsif @display == "H"
+        display = "H"
+      elsif @display == "M"
+        @display = "M"
+      # else
+      #   @display = "X"
       end
     else
-      if @display == "H" && @ship.sunk?
+      if (@display == "H") && @ship.sunk?
+        # require 'pry'; binding.pry
         @display = "X"
       elsif @display == "S"
         @display = "."
       else 
-      @display
+        @display
       end
     end
   end

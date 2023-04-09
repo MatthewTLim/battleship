@@ -175,7 +175,7 @@ RSpec.describe Board do
       expect(board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . M \nC H . . . \nD . . . . \n")
       
       board.fire_upon("D1")
-      # expect(board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . M \nC X . . . \nD X . . . \n")
+      expect(board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . M \nC X . . . \nD X . . . \n")
 
       expect(board.render(true)).to eq("  1 2 3 4 \nA H S S . \nB . . . M \nC X . . . \nD X . . . \n")
 
