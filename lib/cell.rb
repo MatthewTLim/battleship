@@ -32,8 +32,10 @@ class Cell
 
   def render(value=false)
     if value == true
-      if @ship == ship && fired_upon? == false
+      if @ship != nil && fired_upon? == false
         @display = "S"
+      else 
+        @display = "."
       end
     else
       if @display == "H" && @ship.sunk?
