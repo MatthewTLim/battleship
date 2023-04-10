@@ -98,27 +98,100 @@ RSpec.describe Board do
     end
 
     it 'does not overlap ships when placing' do
-      board = Board.new
-      cruiser = Ship.new("Cruiser", 3)
+      @board = Board.new
+      @cruiser = Ship.new("Cruiser", 3)
 
-      board.place(cruiser, ["A1", "A2", "A3"])
+      @board.place(@cruiser, ["A1", "A2", "A3"])
 
-      submarine = Ship.new("Submarine", 2)    
+      @submarine = Ship.new("Submarine", 2)    
       
-      expect(board.valid_placement?(submarine, ["A1", "B1"])).to be (false)
+      expect(@board.valid_placement?(@submarine, ["A1", "B1"])).to be (false)
     end
   end
 
   describe "#render" do
     it "renders the board" do
-      board = Board.new
-      cruiser = Ship.new("Cruiser", 3)    
+      @board = Board.new
+      @cruiser = Ship.new("Cruiser", 3)    
 
-      board.place(cruiser, ["A1", "A2", "A3"])    
+      @board.place(@cruiser, ["A1", "A2", "A3"])    
 
-      expect(board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
-      expect(board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n")
+      expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
+      expect(@board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n")
     end
+  
+    it "renders H when a placed ship is hit" do
+      @board = Board.new
+      @cruiser = Ship.new("Cruiser", 3)
+      @submarine = Ship.new("Submarine", 2) 
+
+      @board.place(@cruiser, ["A1", "A2", "A3"])   
+      @board.place(@submarine, ["C1", "D1"])  
+
+      expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
+      expect(@board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC S . . . \nD S . . . \n")
+
+      @board.fire_upon("A1")
+      expect(@board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . . \nC . . . . \nD . . . . \n")
+    end
+
+    it "renders M when a placed ship is missed" do
+      @board = Board.new
+      @cruiser = Ship.new("Cruiser", 3)
+      @submarine = Ship.new("Submarine", 2) 
+
+      @board.place(@cruiser, ["A1", "A2", "A3"])
+      @board.place(@submarine, ["C1", "D1"])
+
+      expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
+      expect(@board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC S . . . \nD S . . . \n")
+
+      @board.fire_upon("B4")
+      expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . M \nC . . . . \nD . . . . \n")
+    end
+
+    it "renders X when a placed ship is sunk1" do 
+      @board = Board.new
+      @cruiser = Ship.new("Cruiser", 3)
+      @submarine = Ship.new("Submarine", 2) 
+
+      @board.place(@cruiser, ["A1", "A2", "A3"])
+      @board.place(@submarine, ["C1", "D1"])
+
+      @board.fire_upon("C1")
+      expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC H . . . \nD . . . . \n")
+
+      @board.fire_upon("D1")
+      expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC X . . . \nD X . . . \n")
+    end
+
+    it "still renders X when a placed ships are revealed" do
+      @board = Board.new
+      @cruiser = Ship.new("Cruiser", 3)
+      @submarine = Ship.new("Submarine", 2) 
+
+      @board.place(@cruiser, ["A1", "A2", "A3"])
+      @board.place(@submarine, ["C1", "D1"])
+
+      expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
+
+      expect(@board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC S . . . \nD S . . . \n")
+
+      @board.fire_upon("A1")
+      expect(@board.render(true)).to eq("  1 2 3 4 \nA H S S . \nB . . . . \nC S . . . \nD S . . . \n")
+
+      @board.fire_upon("B4")
+      expect(@board.render(true)).to eq("  1 2 3 4 \nA H S S . \nB . . . M \nC S . . . \nD S . . . \n")
+
+      @board.fire_upon("C1")
+      expect(@board.render(true)).to eq("  1 2 3 4 \nA H S S . \nB . . . M \nC H . . . \nD S . . . \n")
+
+      @board.fire_upon("D1")
+      expect(@board.render(true)).to eq("  1 2 3 4 \nA H S S . \nB . . . M \nC X . . . \nD X . . . \n")
+      
+      expect(@board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . M \nC X . . . \nD X . . . \n")
+    end
+
   end
 
 end
