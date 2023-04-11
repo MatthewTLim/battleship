@@ -1,17 +1,17 @@
 class Game
-  attr_reader :cpu_board, 
-  :player_board, 
-  :player, 
+  attr_reader :player, 
   :cpu_player
 
-  def initialize
-    @player = Player.new
-    @cpu_player = Player.new
-    @player_board = Board.new
-    @cpu_board = Board.new
-
+  def initialize(player, cpu_player)
+    @player = player
+    @cpu_player = cpu_player
   end
-  
+
+  def ships
+    Ship.new("Cruiser", 3)
+    Ship.new("Submarine", 2)
+  end
+
   def main_menu
    puts "Welcome to BATTLESHIP Enter p to play. Enter q to quit."
     data = gets.chomp.downcase
