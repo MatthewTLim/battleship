@@ -17,12 +17,7 @@ class Player
   end
 
   def place_ship(ship, coordinates) 
-    # @ships.each do |ship|
-    # until ships == []
     @player_board.place(ship, coordinates) 
-    # require 'pry'; binding.pry
-
-    # end
   end
 
   # place(ship, coordinates) - use this method to place ships for player

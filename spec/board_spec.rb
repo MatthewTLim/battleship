@@ -3,87 +3,74 @@ require './lib/ship'
 require './lib/cell'
 
 RSpec.describe Board do
+  before(:each) do
+    @board = Board.new
+    @cruiser = Ship.new("Cruiser", 3)
+    @submarine = Ship.new("Submarine", 2)
+  end
+
   describe '#initialize' do 
     it 'exists' do 
-      board = Board.new
-
-      expect(board).to be_an(Board)
+      expect(@board).to be_an(Board)
     end
 
     it "has readable attributes" do
-      board = Board.new
-
-      expect(board.cells.length).to eq(16)
-      expect(board.cells).to include("A1", "D4")
-      expect(board.cells["A1"]).to be_an_instance_of(Cell)
+      expect(@board.cells).to include("A1", "D4")
+      expect(@board.cells["A1"]).to be_an_instance_of(Cell)
+      expect(@board.cells.length).to eq(16)
     end
   end
 
   describe "#valid_coordinate?(coordinate)" do
-    it "can validate coordinate" do
-      board = Board.new
-
-      expect(board.valid_coordinate?("A1")).to be(true)
-      expect(board.valid_coordinate?("D4")).to be(true)
-      expect(board.valid_coordinate?("A5")).to be(false)
-      expect(board.valid_coordinate?("E1")).to be(false)
-      expect(board.valid_coordinate?("A22")).to be(false)
+    it "can validate a coordinate" do
+      expect(@board.valid_coordinate?("A1")).to be(true)
+      expect(@board.valid_coordinate?("D4")).to be(true)
+      expect(@board.valid_coordinate?("A5")).to be(false)
+      expect(@board.valid_coordinate?("E1")).to be(false)
+      expect(@board.valid_coordinate?("A22")).to be(false)
     end
   end
 
   describe "#valid_coordinates?(coordinates)" do
-    it "can validate coordinates" do
-      board = Board.new
-
-      expect(board.valid_coordinates?(["A1", "B2", "C4"])).to be(true)
-      expect(board.valid_coordinates?(["A3", "A5", "A1"])).to be(false)
+    it "can validate multiple coordinates" do
+      expect(@board.valid_coordinates?(["A1", "B2", "C4"])).to be(true)
+      expect(@board.valid_coordinates?(["A3", "A5", "A1"])).to be(false)
     
         #!!!!! CHECK TO SEE IF WE NEED TO ADD ADDITTIONAL TESTING HERE????
     
     end
   end
 
-  describe "#valid_placement?" do
-    before(:each) do 
-      @board = Board.new
-      @cruiser = Ship.new("Cruiser", 3)
-      @submarine = Ship.new("Submarine", 2)
-    end
-    
-    it "returns false if number of coordinates is not the same as the ship length" do
+  ### Need test for ascending?(data) !!!!!!!!
+
+  describe "#valid_placement?" do   
+    it "only validates placement if number of coordinates entered matches the ship length" do
       expect(@board.valid_placement?(@cruiser, ["A1", "A2"])).to be(false)
       expect(@board.valid_placement?(@submarine, ["A2", "A3", "A4"])).to be(false)
     end
 
-    it "returns false if coordinates are not consecutive" do
+    it "only validates placement if coordinates are placed consecutively" do
       expect(@board.valid_placement?(@cruiser, ["A1", "A2", "A4"])).to be(false)
       expect(@board.valid_placement?(@submarine, ["A1", "C1"])).to be(false)
       expect(@board.valid_placement?(@cruiser, ["A3", "A2", "A1"])).to be(false)
       expect(@board.valid_placement?(@submarine, ["C1", "B1"])).to be(false)
     end
 
-    it "returns false if coordinates are diagonal" do
+    it "only validates placement if coordinates are not placed diagonally" do
       expect(@board.valid_placement?(@cruiser, ["A1", "B2", "C3"])).to be(false)
       expect(@board.valid_placement?(@submarine, ["C2", "D3"])).to be(false)
     end
 
-    it "returns true if placement is valid" do
+    it "only validates placement if valid coordinates are used" do
       expect(@board.valid_placement?(@submarine, ["A1", "A2"])).to be(true)
       expect(@board.valid_placement?(@submarine, ["E1", "E2"])).to be(false)
       expect(@board.valid_placement?(@cruiser, ["B1", "C1", "D1"])).to be(true)
-    end
-
-    it "returns false if placement coordinates are invalid" do
-      expect(@board.valid_placement?(@submarine, ["E1", "E2"])).to be(false)
       expect(@board.valid_placement?(@cruiser, ["C1", "D1", "E1"])).to be(false)
     end
   end
 
   describe "#place(ship)" do
     it "places a ship opn the board" do
-      @board = Board.new
-      @cruiser = Ship.new("Cruiser", 3)
-
       @board.place(@cruiser, ["A1", "A2", "A3"])
 
       cell_1 = @board.cells["A1"]    
@@ -98,63 +85,43 @@ RSpec.describe Board do
     end
 
     it 'does not overlap ships when placing' do
-      @board = Board.new
-      @cruiser = Ship.new("Cruiser", 3)
-
-      @board.place(@cruiser, ["A1", "A2", "A3"])
-
-      @submarine = Ship.new("Submarine", 2)    
+      @board.place(@cruiser, ["A1", "A2", "A3"]) 
       
       expect(@board.valid_placement?(@submarine, ["A1", "B1"])).to be (false)
     end
   end
 
   describe "#render" do
-    it "renders the board" do
-      @board = Board.new
-      @cruiser = Ship.new("Cruiser", 3)    
-
+    it "displays . for all cells with a placed ship onto the board when ship locator is off" do
       @board.place(@cruiser, ["A1", "A2", "A3"])    
 
       expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
+    end
+
+    it "displays S for all cells with a placed ship onto the board when ship locator is on" do
+      @board.place(@cruiser, ["A1", "A2", "A3"])    
+
       expect(@board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n")
     end
   
-    it "renders H when a placed ship is hit" do
-      @board = Board.new
-      @cruiser = Ship.new("Cruiser", 3)
-      @submarine = Ship.new("Submarine", 2) 
-
+    it "displays H for all hit cells onto the board only if the ship has not sunk" do
       @board.place(@cruiser, ["A1", "A2", "A3"])   
       @board.place(@submarine, ["C1", "D1"])  
-
-      expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
-      expect(@board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC S . . . \nD S . . . \n")
-
+  
       @board.fire_upon("A1")
+
       expect(@board.render).to eq("  1 2 3 4 \nA H . . . \nB . . . . \nC . . . . \nD . . . . \n")
     end
 
-    it "renders M when a placed ship is missed" do
-      @board = Board.new
-      @cruiser = Ship.new("Cruiser", 3)
-      @submarine = Ship.new("Submarine", 2) 
-
+    it "displays M for all missed cells onto the board" do
       @board.place(@cruiser, ["A1", "A2", "A3"])
       @board.place(@submarine, ["C1", "D1"])
-
-      expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
-      expect(@board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC S . . . \nD S . . . \n")
 
       @board.fire_upon("B4")
       expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . M \nC . . . . \nD . . . . \n")
     end
 
-    it "renders X when a placed ship is sunk1" do 
-      @board = Board.new
-      @cruiser = Ship.new("Cruiser", 3)
-      @submarine = Ship.new("Submarine", 2) 
-
+    it "displays X for all cells with sunk ship onto the board" do 
       @board.place(@cruiser, ["A1", "A2", "A3"])
       @board.place(@submarine, ["C1", "D1"])
 
@@ -165,16 +132,11 @@ RSpec.describe Board do
       expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC X . . . \nD X . . . \n")
     end
 
-    it "still renders X when a placed ships are revealed" do
-      @board = Board.new
-      @cruiser = Ship.new("Cruiser", 3)
-      @submarine = Ship.new("Submarine", 2) 
-
+    it "displays S for all cells placed with a ship and not fired upon onto the board when the ship locator is on" do
       @board.place(@cruiser, ["A1", "A2", "A3"])
       @board.place(@submarine, ["C1", "D1"])
 
       expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
-
       expect(@board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC S . . . \nD S . . . \n")
 
       @board.fire_upon("A1")
@@ -193,5 +155,8 @@ RSpec.describe Board do
     end
 
   end
+
+
+  ### Need test for fire_upon(coordinate) !!!!!!!!
 
 end
