@@ -35,13 +35,9 @@ RSpec.describe Board do
     it "can validate multiple coordinates" do
       expect(@board.valid_coordinates?(["A1", "B2", "C4"])).to be(true)
       expect(@board.valid_coordinates?(["A3", "A5", "A1"])).to be(false)
-    
-        #!!!!! CHECK TO SEE IF WE NEED TO ADD ADDITTIONAL TESTING HERE????
-    
     end
   end
 
-  ### Need test for ascending?(data) !!!!!!!!
 
   describe "#valid_placement?" do   
     it "only validates placement if number of coordinates entered matches the ship length" do
@@ -157,6 +153,16 @@ RSpec.describe Board do
   end
 
 
-  ### Need test for fire_upon(coordinate) !!!!!!!!
+  describe "fire_upon(coordinate)" do
+    it "fires upon a valid coordinate" do
+      expect(@board.fire_upon("A1")).to eq("M")
+    end
+
+    it "does not fire on a invalid coordinate" do
+      expect(@board.fire_upon("E1")).to be(false)
+    end
+  end
+
+
 
 end

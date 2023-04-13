@@ -1,5 +1,5 @@
 class Player
-  attr_reader :ships, :player_board
+  attr_reader :ships
   def initialize
     @ships = []
   end
@@ -14,10 +14,4 @@ class Player
   def add_ship(ship)
     @ships << ship
   end
-
-  def place_ship(ship, coordinates) 
-    @player_board.place(ship, coordinates) 
-  end
-
-  # place(ship, coordinates) - use this method to place ships for player
 end
