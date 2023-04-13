@@ -10,15 +10,10 @@ class Game
     @cpu_cruiser =  Ship.new("Cruiser", 3)
     @player_submarine = Ship.new("Submarine", 2)
     @cpu_submarine = Ship.new("Submarine", 2)
-
     @player_board = Board.new
     @cpu_board = Board.new
   end
 
-  # def ships
-  #   Ship.new("Cruiser", 3)
-  #   Ship.new("Submarine", 2)
-  # end
 
   def main_menu
   puts "Welcome to BATTLESHIP Enter p to play. Enter q to quit."
@@ -46,9 +41,16 @@ class Game
       # cruiser_coordinates << cruiser_input.to_s
       while cruiser_input = gets.chomp.to_s.upcase.to_a
         case cruiser_input
-        when valid_coordinates(cruiser_input)
-          place_ship()
+        when valid_coordinates(cruiser_input) && @cpu_board.valid_placement(@cpu_cruiser, cruiser_input)
+          @cpu_board.place_ship(@player_cruiser, cruiser_input)
+          puts "Enter the squares for the Submarine (2 spaces):"
+          print "> "
+          break
+        when valid_coordinates(cruiser_input) == false && @cpu_board.valid_placement(@cpu_cruiser, cruiser_input) == false
+          puts "Invalid coordinates, please try again"
+          print "> "
         end
+
       end
   
       # valid_coordinates(cruiser_coordinates)
