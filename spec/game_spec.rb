@@ -37,7 +37,23 @@ RSpec.describe Game do
       game.place_ship(cruiser, ["A1", "A2", "A3"])
       expect(game.player_board.cells["A1"].ship.nil?).to be(false)
       expect(game.player_board.cells["A2"].ship.nil?).to be(false)
-      expect(game.player_board.cells["A3Z"].ship.nil?).to be(false)
+      expect(game.player_board.cells["A3"].ship.nil?).to be(false)
     end
   end
+
+  # describe "#generate_computer_board(ship)" do
+  #   it "generates computer board with placed ships" do
+  #     cruiser = Ship.new("Cruiser", 3)
+  #     player1 = Player.new
+  #     cpu_player1 = Player.new
+  #     game = Game.new(player1, cpu_player1)
+  #     game.generate_computer_board(cruiser)
+  #     require 'pry'; binding.pry
+  #     expect(game.cpu_board.cells).to eq(1)
+
+  #   end
+  # end
+
+
+
 end
