@@ -2,7 +2,6 @@ class Player
   attr_reader :ships, :player_board
   def initialize
     @ships = []
-    @player_board = Board.new
   end
 
   def health
